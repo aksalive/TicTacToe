@@ -7,29 +7,38 @@ const board = document.getElementById('game-board');
 const cells = board.getElementsByTagName('td');
 const turnIndicator = document.getElementById('turn-indicator');
 
-let touchStart = false;
+const isTouchDevice = 'ontouchstart' in window;
+const touchThreshold = 10; // Adjust this value to change the sensitivity of the hysteresis
+let touchStartX = 0;
+let touchStartY = 0;
 
 for (let cell of cells) {
-    cell.addEventListener('touchstart', () => {
-        touchStart = true;
-    });
-
-    cell.addEventListener('mousedown', () => {
-        touchStart = false;
-    });
-
-    cell.addEventListener('mouseup', handlePointerUp);
+    if (isTouchDevice) {
+        cell.addEventListener('touchstart', (event) => {
+            touchStartX = event.touches[0].clientX;
+            touchStartY = event.touches[0].clientY;
+        });
+        cell.addEventListener('touchend', handleTouch);
+    } else {
+        cell.addEventListener('click', handleClick);
+    }
 }
 
-function handlePointerUp(event) {
-    event.preventDefault();
+function handleClick(event) {
+    event.stopPropagation();
     let cell = event.target;
-
-    if (event.type === 'mouseup' && touchStart) {
-        return;
-    }
-
     processTurn(cell);
+}
+
+function handleTouch(event) {
+    event.preventDefault();
+    let touchEndX = event.changedTouches[0].clientX;
+    let touchEndY = event.changedTouches[0].clientY;
+
+    if (Math.abs(touchEndX - touchStartX) <= touchThreshold && Math.abs(touchEndY - touchStartY) <= touchThreshold) {
+        let cell = event.target;
+        processTurn(cell);
+    }
 }
 
 function processTurn(cell) {
