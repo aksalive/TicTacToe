@@ -7,19 +7,24 @@ const board = document.getElementById('game-board');
 const cells = board.getElementsByTagName('td');
 const turnIndicator = document.getElementById('turn-indicator');
 
+let lastTouchTime = 0;
+
 for (let cell of cells) {
     cell.addEventListener('click', handleClick);
     cell.addEventListener('touchstart', handleTouch);
 }
 
 function handleClick(event) {
-    event.stopPropagation();
-    let cell = event.target;
-    processTurn(cell);
+    let now = new Date().getTime();
+    if (now - lastTouchTime > 500) {
+        let cell = event.target;
+        processTurn(cell);
+    }
 }
 
 function handleTouch(event) {
     event.preventDefault();
+    lastTouchTime = new Date().getTime();
     let cell = event.target;
     processTurn(cell);
 }
