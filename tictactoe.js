@@ -25,11 +25,9 @@ function handleClick(event) {
 
 function handleTouch(event) {
     event.preventDefault();
-    let cell = document.elementFromPoint(
-        event.changedTouches[0].clientX,
-        event.changedTouches[0].clientY
-    );
-    if (cell.tagName.toLowerCase() === 'td') {
+    event.stopPropagation();
+    let cell = document.elementFromPoint(event.changedTouches[0].clientX, event.changedTouches[0].clientY);
+    if (cell && cell.tagName.toLowerCase() === 'td') {
         processTurn(cell);
     }
 }
@@ -45,8 +43,8 @@ function processTurn(cell) {
             resetBoard();
         } else {
             currentPlayer = currentPlayer === PLAYER_ONE ? PLAYER_TWO : PLAYER_ONE;
+            updateTurnIndicator();
         }
-        updateTurnIndicator();
     }
 }
 
