@@ -24,12 +24,12 @@ function handleClick(event) {
 }
 
 function handleTouch(event) {
-    event.preventDefault();
     event.stopPropagation();
     let cell = document.elementFromPoint(event.changedTouches[0].clientX, event.changedTouches[0].clientY);
     if (cell && cell.tagName.toLowerCase() === 'td') {
         processTurn(cell);
     }
+    event.preventDefault();
 }
 
 function processTurn(cell) {
@@ -48,4 +48,58 @@ function processTurn(cell) {
     }
 }
 
-// The rest of the code remains the same...
+function updateTurnIndicator() {
+    turnIndicator.textContent = 'Player ' + currentPlayer + '\'s turn';
+}
+
+function resetBoard() {
+    for (let cell of cells) {
+        cell.textContent = EMPTY;
+    }
+    currentPlayer = PLAYER_ONE;
+    updateTurnIndicator();
+}
+
+function hasWon() {
+    // Check rows
+    for (let i = 0; i < 9; i += 3) {
+        if (cells[i].textContent === currentPlayer &&
+            cells[i + 1].textContent === currentPlayer &&
+            cells[i + 2].textContent === currentPlayer) {
+            return true;
+        }
+    }
+
+    // Check columns
+    for (let i = 0; i < 3; i++) {
+        if (cells[i].textContent === currentPlayer &&
+            cells[i + 3].textContent === currentPlayer &&
+            cells[i + 6].textContent === currentPlayer) {
+            return true;
+        }
+    }
+
+    // Check diagonals
+    if (cells[0].textContent === currentPlayer &&
+        cells[4].textContent === currentPlayer &&
+        cells[8].textContent === currentPlayer) {
+        return true;
+    }
+
+    if (cells[2].textContent === currentPlayer &&
+        cells[4].textContent === currentPlayer &&
+        cells[6].textContent === currentPlayer) {
+        return true;
+    }
+
+    return false;
+}
+
+function isBoardFull() {
+    for (let cell of cells) {
+        if (cell.textContent === EMPTY) {
+            return false;
+        }
+    }
+    return true;
+}
