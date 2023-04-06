@@ -7,13 +7,28 @@ const board = document.getElementById('game-board');
 const cells = board.getElementsByTagName('td');
 const turnIndicator = document.getElementById('turn-indicator');
 
+let touchStart = false;
+
 for (let cell of cells) {
-    cell.addEventListener('pointerup', handlePointerUp);
+    cell.addEventListener('touchstart', () => {
+        touchStart = true;
+    });
+
+    cell.addEventListener('mousedown', () => {
+        touchStart = false;
+    });
+
+    cell.addEventListener('mouseup', handlePointerUp);
 }
 
 function handlePointerUp(event) {
     event.preventDefault();
     let cell = event.target;
+
+    if (event.type === 'mouseup' && touchStart) {
+        return;
+    }
+
     processTurn(cell);
 }
 
