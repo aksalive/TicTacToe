@@ -7,18 +7,13 @@ const board = document.getElementById('game-board');
 const cells = board.getElementsByTagName('td');
 const turnIndicator = document.getElementById('turn-indicator');
 
-let processing = false;
-
 for (let cell of cells) {
     cell.addEventListener('click', handleClick);
-    cell.addEventListener('touchend', handleClick);
+    cell.addEventListener('touchstart', handleClick);
 }
 
 function handleClick(event) {
-    if (processing) return;
-    processing = true;
-
-    if (event.type === 'touchend') {
+    if (event.type === 'touchstart') {
         event.preventDefault();
     }
 
@@ -36,10 +31,6 @@ function handleClick(event) {
             updateTurnIndicator();
         }
     }
-
-    setTimeout(() => {
-        processing = false;
-    }, 100);
 }
 
 // The rest of the code remains the same...
