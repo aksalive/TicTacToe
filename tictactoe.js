@@ -45,8 +45,8 @@ function processTurn(cell) {
             resetBoard();
         } else {
             currentPlayer = currentPlayer === PLAYER_ONE ? PLAYER_TWO : PLAYER_ONE;
-            updateTurnIndicator();
         }
+        updateTurnIndicator();
     }
 }
 
