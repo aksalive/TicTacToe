@@ -1,16 +1,7 @@
-const PLAYER_ONE = 'X';
-const PLAYER_TWO = 'O';
-const EMPTY = '';
-let currentPlayer = PLAYER_ONE;
+// Add the following line below the line: const cells = board.getElementsByTagName('td');
+const turnIndicator = document.getElementById('turn-indicator');
 
-const board = document.getElementById('game-board');
-const cells = board.getElementsByTagName('td');
-
-for (let cell of cells) {
-    cell.addEventListener('click', handleClick);
-    cell.addEventListener('touchend', handleClick);
-}
-
+// Modify the handleClick function to update the turn indicator message
 function handleClick(event) {
     event.preventDefault();
     let cell = event.target;
@@ -24,8 +15,16 @@ function handleClick(event) {
             resetBoard();
         } else {
             currentPlayer = currentPlayer === PLAYER_ONE ? PLAYER_TWO : PLAYER_ONE;
+            updateTurnIndicator();
         }
     }
 }
 
-// The rest of the code remains the same...
+// Add the following function to update the turn indicator message
+function updateTurnIndicator() {
+    if (currentPlayer === PLAYER_ONE) {
+        turnIndicator.textContent = "Player 1's turn (X)";
+    } else {
+        turnIndicator.textContent = "Player 2's turn (O)";
+    }
+}
