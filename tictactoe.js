@@ -15,6 +15,7 @@ for (let cell of cells) {
 function handleClick(event) {
     if (event.type === 'touchstart') {
         event.preventDefault();
+        event.stopPropagation();
     }
 
     let cell = event.target;
@@ -33,4 +34,53 @@ function handleClick(event) {
     }
 }
 
-// The rest of the code remains the same...
+function hasWon() {
+    const lines = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6],
+    ];
+
+    for (let line of lines) {
+        if (
+            cells[line[0]].textContent !== EMPTY &&
+            cells[line[0]].textContent === cells[line[1]].textContent &&
+            cells[line[1]].textContent === cells[line[2]].textContent
+        ) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function isBoardFull() {
+    for (let cell of cells) {
+        if (cell.textContent === EMPTY) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+function resetBoard() {
+    for (let cell of cells) {
+        cell.textContent = EMPTY;
+    }
+    currentPlayer = PLAYER_ONE;
+    updateTurnIndicator();
+}
+
+function updateTurnIndicator() {
+    if (currentPlayer === PLAYER_ONE) {
+        turnIndicator.textContent = "Player 1's turn (X)";
+    } else {
+        turnIndicator.textContent = "Player 2's turn (O)";
+    }
+}
