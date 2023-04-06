@@ -8,17 +8,10 @@ const cells = board.getElementsByTagName('td');
 const turnIndicator = document.getElementById('turn-indicator');
 
 const isTouchDevice = 'ontouchstart' in window;
-const touchThreshold = 10; // Adjust this value to change the sensitivity of the hysteresis
-let touchStartX = 0;
-let touchStartY = 0;
 
 for (let cell of cells) {
     if (isTouchDevice) {
-        cell.addEventListener('touchstart', (event) => {
-            touchStartX = event.touches[0].clientX;
-            touchStartY = event.touches[0].clientY;
-        });
-        cell.addEventListener('touchend', handleTouch);
+        cell.addEventListener('touchend', handleTouch, { passive: false });
     } else {
         cell.addEventListener('click', handleClick);
     }
@@ -32,11 +25,11 @@ function handleClick(event) {
 
 function handleTouch(event) {
     event.preventDefault();
-    let touchEndX = event.changedTouches[0].clientX;
-    let touchEndY = event.changedTouches[0].clientY;
-
-    if (Math.abs(touchEndX - touchStartX) <= touchThreshold && Math.abs(touchEndY - touchStartY) <= touchThreshold) {
-        let cell = event.target;
+    let cell = document.elementFromPoint(
+        event.changedTouches[0].clientX,
+        event.changedTouches[0].clientY
+    );
+    if (cell.tagName.toLowerCase() === 'td') {
         processTurn(cell);
     }
 }
