@@ -1,2 +1,3 @@
 # TicTacToe
-TicTacToe JS game
+TicTacToe JS game. 
+Experiment!  
