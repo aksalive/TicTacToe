@@ -45,19 +45,18 @@ const computerMove = () => {
     } while (cells[cellIndex].textContent);
     cells[cellIndex].textContent = 'O';
     moves++;
+    checkWinner();
     currentPlayer = 'X';
     turnIndicator.textContent = `Player X's turn`;
-    checkWinner();
   }
 };
 
 for (const cell of cells) {
   cell.addEventListener('click', (event) => {
-    if (!event.target.textContent && !gameOver) {
+    if (!event.target.textContent && !gameOver && currentPlayer === 'X') {
       event.target.textContent = currentPlayer;
       moves++;
       checkWinner();
-
       if (!gameOver) {
         currentPlayer = 'O';
         turnIndicator.textContent = `Player O's turn`;
