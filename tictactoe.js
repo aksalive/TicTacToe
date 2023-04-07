@@ -69,4 +69,16 @@ for (const cell of cells) {
       }
     }
   });
+
+  cell.addEventListener('touchend', (event) => {
+    if (!event.target.textContent && !gameOver && currentPlayer === 'X') {
+      event.target.textContent = currentPlayer;
+      moves++;
+      checkWinner();
+      if (!gameOver) {
+        switchPlayer();
+        setTimeout(computerMove, 500);
+      }
+    }
+  });
 }
