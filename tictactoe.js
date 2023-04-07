@@ -1,105 +1,68 @@
-const PLAYER_ONE = 'X';
-const PLAYER_TWO = 'O';
-const EMPTY = '';
-let currentPlayer = PLAYER_ONE;
-
 const board = document.getElementById('game-board');
-const cells = board.getElementsByTagName('td');
+const cells = board.getElementsByClassName('cell');
 const turnIndicator = document.getElementById('turn-indicator');
 
-const isTouchDevice = 'ontouchstart' in window;
+let currentPlayer = 'X';
+let gameOver = false;
+let moves = 0;
 
-for (let cell of cells) {
-    if (isTouchDevice) {
-        cell.addEventListener('touchend', handleTouch, { passive: false });
-    } else {
-        cell.addEventListener('click', handleClick);
+const checkWinner = () => {
+  const winPatterns = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+
+  for (const pattern of winPatterns) {
+    const [a, b, c] = pattern;
+    if (
+      cells[a].textContent &&
+      cells[a].textContent === cells[b].textContent &&
+      cells[a].textContent === cells[c].textContent
+    ) {
+      gameOver = true;
+      turnIndicator.textContent = `Player ${currentPlayer} wins!`;
+      return;
     }
-}
+  }
 
-function handleClick(event) {
-    event.stopPropagation();
-    let cell = event.target;
-    processTurn(cell);
-}
+  if (moves === 9) {
+    gameOver = true;
+    turnIndicator.textContent = "It's a draw!";
+  }
+};
 
-function handleTouch(event) {
-    event.stopPropagation();
-    let cell = document.elementFromPoint(event.changedTouches[0].clientX, event.changedTouches[0].clientY);
-    if (cell && cell.tagName.toLowerCase() === 'td') {
-        processTurn(cell);
+const computerMove = () => {
+  if (!gameOver) {
+    let cellIndex;
+    do {
+      cellIndex = Math.floor(Math.random() * 9);
+    } while (cells[cellIndex].textContent);
+    cells[cellIndex].textContent = 'O';
+    moves++;
+    currentPlayer = 'X';
+    turnIndicator.textContent = `Player X's turn`;
+    checkWinner();
+  }
+};
+
+for (const cell of cells) {
+  cell.addEventListener('click', (event) => {
+    if (!event.target.textContent && !gameOver) {
+      event.target.textContent = currentPlayer;
+      moves++;
+      checkWinner();
+
+      if (!gameOver) {
+        currentPlayer = 'O';
+        turnIndicator.textContent = `Player O's turn`;
+        setTimeout(computerMove, 500);
+      }
     }
-    event.preventDefault();
-}
-
-function processTurn(cell) {
-    if (cell.textContent === EMPTY) {
-        cell.textContent = currentPlayer;
-        if (hasWon()) {
-            alert('Player ' + currentPlayer + ' wins!');
-            resetBoard();
-        } else if (isBoardFull()) {
-            alert("It's a draw!");
-            resetBoard();
-        } else {
-            currentPlayer = currentPlayer === PLAYER_ONE ? PLAYER_TWO : PLAYER_ONE;
-            updateTurnIndicator();
-        }
-    }
-}
-
-function updateTurnIndicator() {
-    turnIndicator.textContent = 'Player ' + currentPlayer + '\'s turn';
-}
-
-function resetBoard() {
-    for (let cell of cells) {
-        cell.textContent = EMPTY;
-    }
-    currentPlayer = PLAYER_ONE;
-    updateTurnIndicator();
-}
-
-function hasWon() {
-    // Check rows
-    for (let i = 0; i < 9; i += 3) {
-        if (cells[i].textContent === currentPlayer &&
-            cells[i + 1].textContent === currentPlayer &&
-            cells[i + 2].textContent === currentPlayer) {
-            return true;
-        }
-    }
-
-    // Check columns
-    for (let i = 0; i < 3; i++) {
-        if (cells[i].textContent === currentPlayer &&
-            cells[i + 3].textContent === currentPlayer &&
-            cells[i + 6].textContent === currentPlayer) {
-            return true;
-        }
-    }
-
-    // Check diagonals
-    if (cells[0].textContent === currentPlayer &&
-        cells[4].textContent === currentPlayer &&
-        cells[8].textContent === currentPlayer) {
-        return true;
-    }
-
-    if (cells[2].textContent === currentPlayer &&
-        cells[4].textContent === currentPlayer &&
-        cells[6].textContent === currentPlayer) {
-        return true;
-    }
-
-    return false;
-}
-
-function isBoardFull() {
-    for (let cell of cells) {
-        if (cell.textContent === EMPTY) {
-            return false;
-        }
-    }
-    return true;
+  });
 }
