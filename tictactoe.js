@@ -37,17 +37,23 @@ const checkWinner = () => {
   }
 };
 
+const switchPlayer = () => {
+  currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+  turnIndicator.textContent = `Player ${currentPlayer}'s turn`;
+};
+
 const computerMove = () => {
-  if (!gameOver) {
+  if (!gameOver && currentPlayer === 'O') {
     let cellIndex;
     do {
       cellIndex = Math.floor(Math.random() * 9);
     } while (cells[cellIndex].textContent);
-    cells[cellIndex].textContent = 'O';
+    cells[cellIndex].textContent = currentPlayer;
     moves++;
     checkWinner();
-    currentPlayer = 'X';
-    turnIndicator.textContent = `Player X's turn`;
+    if (!gameOver) {
+      switchPlayer();
+    }
   }
 };
 
@@ -58,8 +64,7 @@ for (const cell of cells) {
       moves++;
       checkWinner();
       if (!gameOver) {
-        currentPlayer = 'O';
-        turnIndicator.textContent = `Player O's turn`;
+        switchPlayer();
         setTimeout(computerMove, 500);
       }
     }
