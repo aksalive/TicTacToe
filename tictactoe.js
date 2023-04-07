@@ -53,7 +53,7 @@ const canPlayerWin = (player) => {
       return pattern;
     }
   }
-  return null;
+  return false;
 };
 
 const randomMove = () => {
@@ -104,6 +104,7 @@ for (const cell of cells) {
 
   cell.addEventListener('touchend', (event) => {
     if (!event.target.textContent && !gameOver && currentPlayer === 'X') {
+      event
       event.target.textContent = currentPlayer;
       moves++;
       checkWinner();
@@ -114,5 +115,3 @@ for (const cell of cells) {
     }
   });
 }
-
-  
