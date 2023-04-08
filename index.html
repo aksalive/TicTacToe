@@ -1,39 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tic Tac Toe</title>
-    <link rel="stylesheet" href="tictactoe.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tic Tac Toe</title>
+  <link rel="stylesheet" href="tictactoe.css">
 </head>
 <body>
+  <div class="container">
     <h1>Tic Tac Toe</h1>
-    <h2 id="turn-indicator">Player X's turn</h2>
+    <p class="turn-indicator"></p>
     <div class="scoreboard">
-        <div>
-            <span>Player X:</span>
-            <span id="score-x">0</span>
-        </div>
-        <div>
-            <span>Player O:</span>
-            <span id="score-o">0</span>
-        </div>
+      <div>Player X: <span id="score-x">0</span></div>
+      <div>Player O: <span id="score-o">0</span></div>
     </div>
     <div class="board">
-        <div class="cell" data-index="0"></div>
-        <div class="cell" data-index="1"></div>
-        <div class="cell" data-index="2"></div>
-        <div class="cell" data-index="3"></div>
-        <div class="cell" data-index="4"></div>
-        <div class="cell" data-index="5"></div>
-        <div class="cell" data-index="6"></div>
-        <div class="cell" data-index="7"></div>
-        <div class="cell" data-index="8"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
     </div>
-    <button id="new-game">New Game</button>
-    <p>Created by aksalive</p>
-    <script src="tictactoe.js" type="text/javascript"></script>
-    <script src="autoplayer.js" type="text/javascript"></script>
-
+    <button class="new-game">New Game</button>
+  </div>
+  <script src="tictactoe.js" type="text/javascript"></script>
+  <script src="autoplayer.js" type="text/javascript"></script>
 </body>
 </html>
