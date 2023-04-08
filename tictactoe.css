@@ -47,3 +47,24 @@ h1 {
   margin-bottom: 10px;
   text-align: center;
 }
+
+.scoreboard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.scoreboard > div {
+  margin: 0 10px;
+}
+
+.new-game {
+  background-color: #ddd;
+  border: 1px solid #999;
+  border-radius: 5px;
+  font-size: 24px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
