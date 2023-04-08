@@ -1,10 +1,9 @@
-const board = document.getElementById('game-board');
-const cells = board.getElementsByClassName('cell');
+const cells = document.querySelectorAll('.cell');
 const turnIndicator = document.getElementById('turn-indicator');
 
 let currentPlayer = 'X';
-let gameOver = false;
 let moves = 0;
+let gameOver = false;
 
 const winPatterns = [
   [0, 1, 2],
@@ -17,6 +16,21 @@ const winPatterns = [
   [2, 4, 6],
 ];
 
+const switchPlayer = () => {
+  currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+  turnIndicator.textContent = `Player ${currentPlayer}'s turn`;
+};
+
+const updateScoreboard = () => {
+  const scoreX = document.getElementById('score-x');
+  const scoreO = document.getElementById('score-o');
+  scoreX.textContent = wins['X'];
+  scoreO.textContent = wins['O'];
+};
+
+const wins = { X: 0, O: 0 };
+updateScoreboard();
+
 const checkWinner = () => {
   for (const pattern of winPatterns) {
     const [a, b, c] = pattern;
@@ -25,93 +39,37 @@ const checkWinner = () => {
       cells[a].textContent === cells[b].textContent &&
       cells[a].textContent === cells[c].textContent
     ) {
+      wins[currentPlayer]++;
+      updateScoreboard();
       gameOver = true;
-      turnIndicator.textContent = `Player ${currentPlayer} wins!`;
-      return;
+      alert(`Player ${currentPlayer} wins!`);
+      break;
     }
   }
 
-  if (moves === 9) {
+  if (!gameOver && moves === 9) {
     gameOver = true;
-    turnIndicator.textContent = "It's a draw!";
+    alert("It's a draw!");
   }
 };
 
-const switchPlayer = () => {
-  currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-  turnIndicator.textContent = `Player ${currentPlayer}'s turn`;
-};
-
-const canPlayerWin = (player) => {
-  for (const pattern of winPatterns) {
-    const [a, b, c] = pattern;
-    if (
-      (cells[a].textContent === player && cells[b].textContent === player && !cells[c].textContent) ||
-      (cells[a].textContent === player && cells[c].textContent === player && !cells[b].textContent) ||
-      (cells[b].textContent === player && cells[c].textContent === player && !cells[a].textContent)
-    ) {
-      return pattern;
-    }
-  }
-  return false;
-};
-
-const randomMove = () => {
-  let cellIndex;
-  do {
-    cellIndex = Math.floor(Math.random() * 9);
-  } while (cells[cellIndex].textContent);
-  return cellIndex;
-};
-
-const smartComputerMove = () => {
-  if (gameOver || currentPlayer !== 'O') return;
-
-  let cellIndex;
-
-  const winningMove = canPlayerWin('O');
-  if (winningMove) {
-    cellIndex = winningMove.find((i) => !cells[i].textContent);
-  } else {
-    const blockingMove = canPlayerWin('X');
-    if (blockingMove) {
-      cellIndex = blockingMove.find((i) => !cells[i].textContent);
-    } else {
-      cellIndex = randomMove();
-    }
+const makeMove = (cell) => {
+  if (gameOver || cell.textContent) {
+    return;
   }
 
-  cells[cellIndex].textContent = currentPlayer;
+  cell.textContent = currentPlayer;
   moves++;
+
   checkWinner();
+
   if (!gameOver) {
     switchPlayer();
   }
 };
 
-for (const cell of cells) {
+cells.forEach((cell) => {
   cell.addEventListener('click', (event) => {
-    if (!event.target.textContent && !gameOver && currentPlayer === 'X') {
-      event.target.textContent = currentPlayer;
-      moves++;
-      checkWinner();
-      if (!gameOver) {
-        switchPlayer();
-        setTimeout(smartComputerMove, 500);
-      }
-    }
+    makeMove(event.target);
   });
-
-  cell.addEventListener('touchend', (event) => {
-    if (!event.target.textContent && !gameOver && currentPlayer === 'X') {
-      event
-      event.target.textContent = currentPlayer;
-      moves++;
-      checkWinner();
-      if (!gameOver) {
-        switchPlayer();
-        setTimeout(smartComputerMove, 500);
-      }
-    }
-  });
-}
+});
