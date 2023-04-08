@@ -19,6 +19,12 @@ const winPatterns = [
 const switchPlayer = () => {
   currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
   turnIndicator.textContent = `Player ${currentPlayer}'s turn`;
+
+  if (currentPlayer === 'O' && !gameOver) {
+    setTimeout(() => {
+      makeAutoMove();
+    }, 300);
+  }
 };
 
 const updateScoreboard = () => {
@@ -68,8 +74,18 @@ const makeMove = (cell) => {
   }
 };
 
+const makeAutoMove = () => {
+  let emptyCells = Array.from(cells).filter(cell => !cell.textContent);
+  if (emptyCells.length > 0) {
+    const randomIndex = Math.floor(Math.random() * emptyCells.length);
+    makeMove(emptyCells[randomIndex]);
+  }
+};
+
 cells.forEach((cell) => {
   cell.addEventListener('click', (event) => {
-    makeMove(event.target);
+    if (currentPlayer === 'X') {
+      makeMove(event.target);
+    }
   });
 });
