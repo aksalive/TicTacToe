@@ -62,25 +62,22 @@ function endGame() {
   }
 }
 
-function cellClicked(index) {
-  if (board[index] !== "" || gameEnded) {
-    return;
-  }
+function cellClicked(e) {
+  const cellIndex = cells.indexOf(e.target);
 
-  board[index] = currentPlayer;
-  cells[index].textContent = currentPlayer;
-
-  if (checkWin() || checkDraw()) {
-    endGame();
-  } else {
-    currentPlayer = currentPlayer === "X" ? "O" : "X";
-    turnIndicator.textContent = `Player ${currentPlayer}'s turn`;
-
-    if (currentPlayer === "O") {
+  if (board[cellIndex] === "" && currentPlayer === "X") {
+    board[cellIndex] = currentPlayer;
+    e.target.textContent = currentPlayer;
+    if (checkWin() || checkDraw()) {
+      endGame();
+    } else {
+      currentPlayer = "O";
+      turnIndicator.textContent = `Player ${currentPlayer}'s turn`;
       makeBestMove();
     }
   }
 }
+
 
 for (let i = 0; i < cells.length; i++) {
   cells[i].addEventListener("click", () => cellClicked(i));
