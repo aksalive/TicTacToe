@@ -1,5 +1,6 @@
 const cells = document.querySelectorAll('.cell');
 const turnIndicator = document.getElementById('turn-indicator');
+const newGameButton = document.getElementById('new-game');
 
 let currentPlayer = 'X';
 let moves = 0;
@@ -86,3 +87,18 @@ cells.forEach((cell) => {
     }
   });
 });
+
+const resetGame = () => {
+  cells.forEach((cell) => {
+    cell.textContent = '';
+  });
+
+  currentPlayer = 'X';
+  moves = 0;
+  gameOver = false;
+
+  turnIndicator.textContent = `Player ${currentPlayer}'s turn`;
+};
+
+newGameButton.addEventListener('click', resetGame);
+
