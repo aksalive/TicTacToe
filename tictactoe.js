@@ -19,12 +19,6 @@ const winPatterns = [
 const switchPlayer = () => {
   currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
   turnIndicator.textContent = `Player ${currentPlayer}'s turn`;
-
-  if (currentPlayer === 'O' && !gameOver) {
-    setTimeout(() => {
-      makeAutoMove();
-    }, 300);
-  }
 };
 
 const updateScoreboard = () => {
@@ -71,6 +65,9 @@ const makeMove = (cell) => {
 
   if (!gameOver) {
     switchPlayer();
+    if (currentPlayer === 'O') {
+      makeAutoMove();
+    }
   }
 };
 
