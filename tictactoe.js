@@ -57,13 +57,15 @@ function endGame() {
     } else {
       scoreboardO.textContent = Number(scoreboardO.textContent) + 1;
     }
-  } else if (checkDraw()) {
+  } else {
     turnIndicator.textContent = "It's a draw!";
   }
 }
 
 function cellClicked(index) {
-  if (gameEnded || board[index] !== "") return;
+  if (board[index] !== "" || gameEnded) {
+    return;
+  }
 
   board[index] = currentPlayer;
   cells[index].textContent = currentPlayer;
@@ -73,17 +75,16 @@ function cellClicked(index) {
   } else {
     currentPlayer = currentPlayer === "X" ? "O" : "X";
     turnIndicator.textContent = `Player ${currentPlayer}'s turn`;
+
     if (currentPlayer === "O") {
       makeBestMove();
     }
   }
 }
 
-cells.forEach((cell, index) => {
-  cell.addEventListener("click", () => {
-    cellClicked(index);
-  });
-});
+for (let i = 0; i < cells.length; i++) {
+  cells[i].addEventListener("click", () => cellClicked(i));
+}
 
 newGameButton.addEventListener("click", startNewGame);
 
@@ -96,46 +97,22 @@ function minimax(board, depth, isMaximizing) {
     return 0;
   }
 
-  const evaluateMoves = (move) => {
-    const newBoard = [...board];
-    newBoard[move] = isMaximizing ? "O" : "X";
-    return minimax(newBoard, depth + 1, !isMaximizing);
-  };
-
-  const availableMoves = board.reduce(
-    (acc, _, index) => (board[index] === "" ? [...acc, index] : acc),
-    []
-  );
-  const scores = availableMoves.map(evaluateMoves);
-  return isMaximizing
-    ? Math.max(...scores) - depth
-    : Math.min(...scores) + depth;
-}
-
-function findBestMove(board) {
-  let bestMove  = -1;
-  let bestScore = -Infinity;
+  let bestScore = isMaximizing ? -Infinity : Infinity;
 
   for (let i = 0; i < board.length; i++) {
     if (board[i] === '') {
       const newBoard = [...board];
-      newBoard[i] = 'O';
-      const moveScore = minimax(newBoard, 0, false);
+      newBoard[i] = isMaximizing ? 'O' : 'X';
+      const moveScore = minimax(newBoard, depth + 1, !isMaximizing);
 
-      if (moveScore > bestScore) {
-        bestScore = moveScore;
-        bestMove = i;
+      if (isMaximizing) {
+        bestScore = Math.max(bestScore, moveScore);
+      } else {
+        bestScore = Math.min(bestScore, moveScore);
       }
     }
   }
 
-  return bestMove;
+  return bestScore;
 }
-
-function makeBestMove() {
-  const bestMove = findBestMove(board);
-  cellClicked(bestMove);
-}
-
-startNewGame();
 
