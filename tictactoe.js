@@ -116,3 +116,28 @@ function minimax(board, depth, isMaximizing) {
   return bestScore;
 }
 
+function makeBestMove() {
+  let bestScore = -Infinity;
+  let bestMove;
+
+  for (let i = 0; i < board.length; i++) {
+    if (board[i] === "") {
+      board[i] = "O";
+      const moveScore = minimax(board, 0, false);
+      board[i] = "";
+      if (moveScore > bestScore) {
+        bestScore = moveScore;
+        bestMove = i;
+      }
+    }
+  }
+
+  board[bestMove] = "O";
+  cells[bestMove].textContent = "O";
+  if (checkWin() || checkDraw()) {
+    endGame();
+  } else {
+    currentPlayer = "X";
+    turnIndicator.textContent = `Player ${currentPlayer}'s turn`;
+  }
+}
