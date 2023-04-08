@@ -1,36 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tic-Tac-Toe by aksalive</title>
-  <link rel="stylesheet" href="tictactoe.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe</title>
+    <link rel="stylesheet" href="tictactoe.css">
 </head>
 <body>
-  <h1>Tic-Tac-Toe</h1>
-  <p id="turn-indicator">Player X's turn</p>
-  <div id="scoreboard">
-    <p>Player X: <span id="score-x">0</span></p>
-    <p>Player O: <span id="score-o">0</span></p>
-  </div>
-  <div id="game-board">
-    <div class="row">
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
+    <h1>Tic Tac Toe</h1>
+    <h2 id="turn-indicator">Player X's turn</h2>
+    <div class="scoreboard">
+        <div>
+            <span>Player X:</span>
+            <span id="score-x">0</span>
+        </div>
+        <div>
+            <span>Player O:</span>
+            <span id="score-o">0</span>
+        </div>
     </div>
-    <div class="row">
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
+    <div class="board">
+        <div class="cell" data-index="0"></div>
+        <div class="cell" data-index="1"></div>
+        <div class="cell" data-index="2"></div>
+        <div class="cell" data-index="3"></div>
+        <div class="cell" data-index="4"></div>
+        <div class="cell" data-index="5"></div>
+        <div class="cell" data-index="6"></div>
+        <div class="cell" data-index="7"></div>
+        <div class="cell" data-index="8"></div>
     </div>
-    <div class="row">
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-    </div>
-  </div>
-  <p class="credits">Created by <a href="https://github.com/aksalive" target="_blank">aksalive</a></p>
-  <script src="tictactoe.js" type="text/javascript"></script>
+    <button id="new-game">New Game</button>
+    <p>Created by aksalive</p>
+    <script src="tictactoe.js"></script>
 </body>
 </html>
