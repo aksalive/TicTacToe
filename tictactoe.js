@@ -141,3 +141,4 @@ function makeBestMove() {
     turnIndicator.textContent = `Player ${currentPlayer}'s turn`;
   }
 }
+
